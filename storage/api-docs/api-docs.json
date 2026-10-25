@@ -1,0 +1,78 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Gestión de Productos",
+        "description": "Documentación Swagger para la prueba técnica de productos y divisas.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8090/api",
+            "description": "Servidor Local"
+        }
+    ],
+    "paths": {
+        "/currencies": {
+            "get": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Listar todas las divisas",
+                "description": "Retorna el listado completo de divisas disponibles en el sistema con sus tasas de cambio.",
+                "operationId": "83dc783b06ff74c6780eebbe38bdcfe9",
+                "responses": {
+                    "200": {
+                        "description": "Lista de divisas obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "US Dollar"
+                                            },
+                                            "symbol": {
+                                                "type": "string",
+                                                "example": "$"
+                                            },
+                                            "exchange_rate": {
+                                                "type": "string",
+                                                "example": "1.0000"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2026-10-25T21:42:30.000000Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2026-10-25T21:42:30.000000Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Currencies",
+            "description": "Currencies"
+        }
+    ]
+}

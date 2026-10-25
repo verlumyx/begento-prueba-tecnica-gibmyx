@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     description: "Documentación Swagger para la prueba técnica de productos y divisas."
 )]
 #[OA\Server(
-    url: "http://localhost:8000/api",
+    url: L5_SWAGGER_CONST_HOST,
     description: "Servidor Local"
 )]
 
