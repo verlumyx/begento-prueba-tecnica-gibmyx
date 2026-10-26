@@ -14,7 +14,7 @@ API RESTful desarrollada en **Laravel 12** y **PHP 8.2+** para la gestión de pr
 
 1. [Requisitos Previos (Sin Docker)](#requisitos-previos-sin-docker)
 2. [Cómo Clonar el Repositorio](#cómo-clonar-el-repositorio)
-3. [Cómo Inicializar el Proyecto Normal (Sin Docker)](#cómo-inicializar-el-proyecto-normal-sin-docker)
+3. [Cómo Inicializar el Proyecto](#cómo-inicializar-el-proyecto)
    - [Inicio Rápido (Cheat Sheet)](#inicio-rápido-cheat-sheet)
    - [Paso a Paso Detallado](#paso-a-paso-detallado)
    - [Verificación de la Instalación](#verificación-de-la-instalación)
@@ -27,7 +27,6 @@ API RESTful desarrollada en **Laravel 12** y **PHP 8.2+** para la gestión de pr
    - [Precios de Productos (Product Prices)](#precios-de-productos-product-prices)
 7. [Arquitectura y Estructura del Código](#arquitectura-y-estructura-del-código)
 8. [Comandos de Utilidad](#comandos-de-utilidad)
-9. [Anexo: Ejecución Opcional con Docker](#anexo-ejecución-opcional-con-docker)
 
 ---
 
@@ -401,25 +400,6 @@ php artisan tinker
 # Formatear el código con Laravel Pint
 ./vendor/bin/pint
 ```
-
----
-
-## Anexo: Ejecución Opcional con Docker
-
-Si dispones de un entorno con Docker y Docker Compose:
-
-1. **Iniciar contenedores:**
-   ```bash
-   docker compose up -d
-   ```
-2. **Ejecutar migraciones en el contenedor:**
-   ```bash
-   docker compose exec app php artisan migrate --force
-   docker compose exec app php artisan db:seed
-   ```
-3. **Acceder:**
-   - API / Nginx: [http://localhost:8090](http://localhost:8090)
-   - Swagger UI: [http://localhost:8090/api/documentation](http://localhost:8090/api/documentation)
 
 ---
 
