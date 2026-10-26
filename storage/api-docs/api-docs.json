@@ -69,6 +69,126 @@
             }
         },
         "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Listar productos con paginación por cursor",
+                "description": "Retorna el listado de productos paginado mediante cursor, optimizado para alto rendimiento.",
+                "operationId": "8cbbe42aa8246e4c4a0271746b2d1cf1",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Cantidad de elementos por página (por defecto 15)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Cursor para navegar a la siguiente o anterior página",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listado de productos obtenido exitosamente con cursor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Laptop Gamer Asus ROG"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Laptop de alto rendimiento"
+                                                    },
+                                                    "price": {
+                                                        "type": "string",
+                                                        "example": "1899.99"
+                                                    },
+                                                    "currency_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "tax_cost": {
+                                                        "type": "string",
+                                                        "example": "303.99"
+                                                    },
+                                                    "manufacturing_cost": {
+                                                        "type": "string",
+                                                        "example": "1150.00"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-10-25T21:42:30.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-10-25T21:42:30.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost:8090/api/products"
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 15
+                                        },
+                                        "next_cursor": {
+                                            "type": "string",
+                                            "example": "eyJpZCI6MTV9",
+                                            "nullable": true
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8090/api/products?cursor=eyJpZCI6MTV9",
+                                            "nullable": true
+                                        },
+                                        "prev_cursor": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Products"

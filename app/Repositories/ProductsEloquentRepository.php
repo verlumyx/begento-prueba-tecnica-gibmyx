@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Repositories\Contracts\ProductsRepository;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 
 class ProductsEloquentRepository implements ProductsRepository
 {
@@ -15,5 +16,13 @@ class ProductsEloquentRepository implements ProductsRepository
     public function create(array $data): Product
     {
         return Product::create($data);
+    }
+
+    /**
+     * Paginate products using cursor pagination.
+     */
+    public function cursorPaginate(int $perPage = 15): CursorPaginator
+    {
+        return Product::cursorPaginate($perPage);
     }
 }
