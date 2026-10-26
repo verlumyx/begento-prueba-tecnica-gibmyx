@@ -44,4 +44,20 @@ class ProductsServices
 
         return $product;
     }
+
+    /**
+     * Delete a product by its ID or throw a ProductNotFoundException.
+     *
+     * @throws ProductNotFoundException
+     */
+    public function delete(int $id): bool
+    {
+        $deleted = $this->productsRepository->delete($id);
+
+        if (! $deleted) {
+            throw new ProductNotFoundException;
+        }
+
+        return true;
+    }
 }

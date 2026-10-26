@@ -23,4 +23,9 @@ interface ProductsRepository
      * Find a product by its ID.
      */
     public function findById(int $id): ?Product;
+
+    /**
+     * Delete a product by its ID.
+     */
+    public function delete(int $id): bool;
 }

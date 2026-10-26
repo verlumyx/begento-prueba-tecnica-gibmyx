@@ -33,4 +33,18 @@ class ProductsEloquentRepository implements ProductsRepository
     {
         return Product::find($id);
     }
+
+    /**
+     * Delete a product by its ID.
+     */
+    public function delete(int $id): bool
+    {
+        $product = $this->findById($id);
+
+        if (! $product) {
+            return false;
+        }
+
+        return (bool) $product->delete();
+    }
 }
