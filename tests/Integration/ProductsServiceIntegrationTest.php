@@ -45,4 +45,29 @@ class ProductsServiceIntegrationTest extends TestCase
             'currency_id' => $currency->id,
         ]);
     }
+
+    public function test_service_can_cursor_paginate_real_data_from_database(): void
+    {
+        $currency = Currency::factory()->create();
+        Product::factory()->count(4)->create(['currency_id' => $currency->id]);
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $result = $service->cursorPaginate(2);
+
+        $this->assertCount(2, $result->items());
+        $this->assertTrue($result->hasMorePages());
+        $this->assertNotNull($result->nextCursor());
+    }
+
+    public function test_service_cursor_paginate_returns_empty_when_no_records(): void
+    {
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $result = $service->cursorPaginate(15);
+
+        $this->assertTrue($result->isEmpty());
+    }
 }

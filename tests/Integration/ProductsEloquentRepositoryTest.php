@@ -109,4 +109,48 @@ class ProductsEloquentRepositoryTest extends TestCase
         $this->assertEquals($currency->id, $product->currency->id);
         $this->assertEquals('Euro', $product->currency->name);
     }
+
+    public function test_cursor_paginate_returns_empty_when_database_is_empty(): void
+    {
+        $paginator = $this->repository->cursorPaginate(15);
+
+        $this->assertTrue($paginator->isEmpty());
+        $this->assertCount(0, $paginator->items());
+    }
+
+    public function test_cursor_paginate_returns_items_up_to_per_page(): void
+    {
+        $currency = Currency::factory()->create();
+        Product::factory()->count(5)->create(['currency_id' => $currency->id]);
+
+        $paginator = $this->repository->cursorPaginate(3);
+
+        $this->assertCount(3, $paginator->items());
+        $this->assertTrue($paginator->hasMorePages());
+        $this->assertNotNull($paginator->nextCursor());
+    }
+
+    public function test_cursor_paginate_navigates_correctly_between_pages(): void
+    {
+        $currency = Currency::factory()->create();
+        $p1 = Product::factory()->create(['currency_id' => $currency->id, 'name' => 'Item 1']);
+        $p2 = Product::factory()->create(['currency_id' => $currency->id, 'name' => 'Item 2']);
+        $p3 = Product::factory()->create(['currency_id' => $currency->id, 'name' => 'Item 3']);
+
+        $page1 = $this->repository->cursorPaginate(2);
+        $this->assertCount(2, $page1->items());
+        $this->assertEquals($p1->id, $page1->items()[0]->id);
+        $this->assertEquals($p2->id, $page1->items()[1]->id);
+
+        $cursor = $page1->nextCursor();
+        $this->assertNotNull($cursor);
+
+        // Fetch second page passing the cursor through request context
+        request()->merge(['cursor' => $cursor->encode()]);
+        $page2 = $this->repository->cursorPaginate(2);
+
+        $this->assertCount(1, $page2->items());
+        $this->assertEquals($p3->id, $page2->items()[0]->id);
+        $this->assertNull($page2->nextCursor());
+    }
 }
