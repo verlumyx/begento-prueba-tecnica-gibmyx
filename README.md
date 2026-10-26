@@ -2,7 +2,7 @@
 
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=flat&logo=php&logoColor=white)](https://www.php.net/)
-[![Tests](https://img.shields.io/badge/Tests-186%20Passed-10B981?style=flat&logo=checkmarx&logoColor=white)](#ejecución-de-pruebas-testing-sin-docker)
+[![Tests](https://img.shields.io/badge/Tests-186%20Passed-10B981?style=flat&logo=checkmarx&logoColor=white)](#ejecución-de-pruebas-testing)
 [![Swagger](https://img.shields.io/badge/OpenAPI-Swagger%203.0-85EA2D?style=flat&logo=swagger&logoColor=black)](#documentación-interactiva-swagger--openapi)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -12,13 +12,13 @@ API RESTful desarrollada en **Laravel 12** y **PHP 8.2+** para la gestión de pr
 
 ## Tabla de Contenidos
 
-1. [Requisitos Previos (Sin Docker)](#requisitos-previos-sin-docker)
+1. [Requisitos Previos](#requisitos-previos)
 2. [Cómo Clonar el Repositorio](#cómo-clonar-el-repositorio)
 3. [Cómo Inicializar el Proyecto](#cómo-inicializar-el-proyecto)
    - [Inicio Rápido (Cheat Sheet)](#inicio-rápido-cheat-sheet)
    - [Paso a Paso Detallado](#paso-a-paso-detallado)
    - [Verificación de la Instalación](#verificación-de-la-instalación)
-4. [Ejecución de Pruebas (Testing sin Docker)](#ejecución-de-pruebas-testing-sin-docker)
+4. [Ejecución de Pruebas (Testing)](#ejecución-de-pruebas-testing)
 5. [Documentación Interactiva (Swagger / OpenAPI)](#documentación-interactiva-swagger--openapi)
 6. [Catálogo de Endpoints de la API](#catálogo-de-endpoints-de-la-api)
    - [Health Check](#health-check)
@@ -30,7 +30,7 @@ API RESTful desarrollada en **Laravel 12** y **PHP 8.2+** para la gestión de pr
 
 ---
 
-## Requisitos Previos (Sin Docker)
+## Requisitos Previos
 
 Para inicializar y ejecutar este proyecto de forma estándar en tu máquina local, requieres contar con:
 
@@ -77,7 +77,7 @@ cd begento-prueba-tecnica-gibmyx
 
 ---
 
-## Cómo Inicializar el Proyecto Normal (Sin Docker)
+## Cómo Inicializar el Proyecto
 
 ### Inicio Rápido (Cheat Sheet)
 
@@ -194,7 +194,7 @@ Abre en tu navegador web:
 
 ---
 
-## Ejecución de Pruebas (Testing sin Docker)
+## Ejecución de Pruebas (Testing)
 
 La suite de pruebas contiene **186 tests** y **758 aserciones** que cubren pruebas unitarias, de integración y funcionales End-to-End.
 
