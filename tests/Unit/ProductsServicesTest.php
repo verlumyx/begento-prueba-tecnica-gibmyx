@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\ProductNotFoundException;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductsRepository;
 use App\Services\ProductsServices;
@@ -54,5 +55,39 @@ class ProductsServicesTest extends TestCase
 
         $this->assertInstanceOf(CursorPaginator::class, $result);
         $this->assertEquals(10, $result->perPage());
+    }
+
+    public function test_find_by_id_returns_product_when_found(): void
+    {
+        $product = new Product(['name' => 'Teclado Mecanico']);
+        $product->id = 5;
+
+        $mockRepository = Mockery::mock(ProductsRepository::class);
+        $mockRepository->shouldReceive('findById')
+            ->once()
+            ->with(5)
+            ->andReturn($product);
+
+        $service = new ProductsServices($mockRepository);
+        $result = $service->findById(5);
+
+        $this->assertInstanceOf(Product::class, $result);
+        $this->assertEquals(5, $result->id);
+        $this->assertEquals('Teclado Mecanico', $result->name);
+    }
+
+    public function test_find_by_id_throws_product_not_found_exception_when_not_found(): void
+    {
+        $this->expectException(ProductNotFoundException::class);
+        $this->expectExceptionMessage('El producto solicitado no fue encontrado.');
+
+        $mockRepository = Mockery::mock(ProductsRepository::class);
+        $mockRepository->shouldReceive('findById')
+            ->once()
+            ->with(999)
+            ->andReturn(null);
+
+        $service = new ProductsServices($mockRepository);
+        $service->findById(999);
     }
 }

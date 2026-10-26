@@ -153,4 +153,26 @@ class ProductsEloquentRepositoryTest extends TestCase
         $this->assertEquals($p3->id, $page2->items()[0]->id);
         $this->assertNull($page2->nextCursor());
     }
+
+    public function test_find_by_id_returns_product_when_exists(): void
+    {
+        $currency = Currency::factory()->create();
+        $created = Product::factory()->create([
+            'currency_id' => $currency->id,
+            'name' => 'Tablet Pro',
+        ]);
+
+        $found = $this->repository->findById($created->id);
+
+        $this->assertInstanceOf(Product::class, $found);
+        $this->assertEquals($created->id, $found->id);
+        $this->assertEquals('Tablet Pro', $found->name);
+    }
+
+    public function test_find_by_id_returns_null_when_does_not_exist(): void
+    {
+        $found = $this->repository->findById(99999);
+
+        $this->assertNull($found);
+    }
 }

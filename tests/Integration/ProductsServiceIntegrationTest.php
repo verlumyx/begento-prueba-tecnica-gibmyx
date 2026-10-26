@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use App\Exceptions\ProductNotFoundException;
 use App\Models\Currency;
 use App\Models\Product;
 use App\Services\ProductsServices;
@@ -69,5 +70,31 @@ class ProductsServiceIntegrationTest extends TestCase
         $result = $service->cursorPaginate(15);
 
         $this->assertTrue($result->isEmpty());
+    }
+
+    public function test_service_can_find_product_by_id_from_database(): void
+    {
+        $currency = Currency::factory()->create();
+        $product = Product::factory()->create(['currency_id' => $currency->id, 'name' => 'Webcam 4K']);
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $result = $service->findById($product->id);
+
+        $this->assertInstanceOf(Product::class, $result);
+        $this->assertEquals($product->id, $result->id);
+        $this->assertEquals('Webcam 4K', $result->name);
+    }
+
+    public function test_service_throws_exception_when_product_not_found_in_database(): void
+    {
+        $this->expectException(ProductNotFoundException::class);
+        $this->expectExceptionMessage('El producto solicitado no fue encontrado.');
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $service->findById(99999);
     }
 }
