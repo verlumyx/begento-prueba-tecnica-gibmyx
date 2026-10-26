@@ -25,4 +25,12 @@ class ProductsEloquentRepository implements ProductsRepository
     {
         return Product::cursorPaginate($perPage);
     }
+
+    /**
+     * Find a product by its ID.
+     */
+    public function findById(int $id): ?Product
+    {
+        return Product::find($id);
+    }
 }

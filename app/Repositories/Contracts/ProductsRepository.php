@@ -18,4 +18,9 @@ interface ProductsRepository
      * Paginate products using cursor pagination.
      */
     public function cursorPaginate(int $perPage = 15): CursorPaginator;
+
+    /**
+     * Find a product by its ID.
+     */
+    public function findById(int $id): ?Product;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\ProductNotFoundException;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductsRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -26,5 +27,21 @@ class ProductsServices
     public function cursorPaginate(int $perPage = 15): CursorPaginator
     {
         return $this->productsRepository->cursorPaginate($perPage);
+    }
+
+    /**
+     * Find a product by its ID or throw a ProductNotFoundException.
+     *
+     * @throws ProductNotFoundException
+     */
+    public function findById(int $id): Product
+    {
+        $product = $this->productsRepository->findById($id);
+
+        if (! $product) {
+            throw new ProductNotFoundException;
+        }
+
+        return $product;
     }
 }
