@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Currencies\CurrenciesGetController;
+use App\Http\Controllers\Currencies\CurrencyDeleteController;
+use App\Http\Controllers\Currencies\CurrencyGetController;
+use App\Http\Controllers\Currencies\CurrencyPostController;
+use App\Http\Controllers\Currencies\CurrencyPutController;
 use App\Http\Controllers\Products\ProductDeleteController;
 use App\Http\Controllers\Products\ProductGetController;
 use App\Http\Controllers\Products\ProductPostController;
@@ -15,6 +19,11 @@ Route::get('/status', function () {
 });
 
 Route::get('/currencies', CurrenciesGetController::class);
+Route::post('/currencies', CurrencyPostController::class);
+Route::get('/currencies/{id}', CurrencyGetController::class)->whereNumber('id');
+Route::put('/currencies/{id}', CurrencyPutController::class)->whereNumber('id');
+Route::delete('/currencies/{id}', CurrencyDeleteController::class)->whereNumber('id');
+
 Route::get('/products', ProductsGetController::class);
 Route::get('/products/{id}', ProductGetController::class)->whereNumber('id');
 Route::post('/products', ProductPostController::class);

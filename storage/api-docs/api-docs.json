@@ -66,6 +66,334 @@
                         "description": "Error interno del servidor"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Crear una nueva divisa",
+                "description": "Registra una nueva divisa en el sistema con su nombre, símbolo y tasa de cambio.",
+                "operationId": "00c801efa2fbde5fff10802f0a488ecd",
+                "requestBody": {
+                    "description": "Datos requeridos para la creación de una divisa",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "symbol",
+                                    "exchange_rate"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "US Dollar"
+                                    },
+                                    "symbol": {
+                                        "type": "string",
+                                        "example": "$"
+                                    },
+                                    "exchange_rate": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Divisa creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "US Dollar"
+                                        },
+                                        "symbol": {
+                                            "type": "string",
+                                            "example": "$"
+                                        },
+                                        "exchange_rate": {
+                                            "type": "string",
+                                            "example": "1.0000"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en los datos enviados"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/currencies/{id}": {
+            "get": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Obtener una divisa por ID",
+                "description": "Retorna los datos de una divisa específica mediante su ID.",
+                "operationId": "37f5aaf361fa3fcfee3d5cfb20a14bcd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único de la divisa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Divisa obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "US Dollar"
+                                        },
+                                        "symbol": {
+                                            "type": "string",
+                                            "example": "$"
+                                        },
+                                        "exchange_rate": {
+                                            "type": "string",
+                                            "example": "1.0000"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Divisa no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "La divisa solicitada no fue encontrada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Actualizar una divisa",
+                "description": "Actualiza los datos de una divisa existente mediante su ID.",
+                "operationId": "e483c4bf540660fdcc7d8b7afdcf5715",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único de la divisa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos a actualizar de la divisa",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "US Dollar Updated"
+                                    },
+                                    "symbol": {
+                                        "type": "string",
+                                        "example": "USD$"
+                                    },
+                                    "exchange_rate": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 1.05
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Divisa actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "US Dollar Updated"
+                                        },
+                                        "symbol": {
+                                            "type": "string",
+                                            "example": "USD$"
+                                        },
+                                        "exchange_rate": {
+                                            "type": "string",
+                                            "example": "1.0500"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Divisa no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "La divisa solicitada no fue encontrada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en los datos enviados"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Currencies"
+                ],
+                "summary": "Eliminar una divisa por ID",
+                "description": "Elimina una divisa y los registros asociados mediante su ID.",
+                "operationId": "e053db904e4a530262d83b1dcb274cc2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único de la divisa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Divisa eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Divisa eliminada exitosamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Divisa no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "La divisa solicitada no fue encontrada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
             }
         },
         "/products/{id}": {

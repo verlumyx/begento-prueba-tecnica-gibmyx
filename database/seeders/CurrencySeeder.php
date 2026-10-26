@@ -25,24 +25,6 @@ class CurrencySeeder extends Seeder
                 'symbol' => '€',
                 'exchange_rate' => 0.9200,
             ],
-            [
-                'id' => 3,
-                'name' => 'British Pound',
-                'symbol' => '£',
-                'exchange_rate' => 0.7900,
-            ],
-            [
-                'id' => 4,
-                'name' => 'Mexican Peso',
-                'symbol' => 'MX$',
-                'exchange_rate' => 17.5000,
-            ],
-            [
-                'id' => 5,
-                'name' => 'Canadian Dollar',
-                'symbol' => 'CA$',
-                'exchange_rate' => 1.3600,
-            ],
         ];
 
         foreach ($currencies as $currency) {
