@@ -91,6 +91,48 @@ class ProductsServicesTest extends TestCase
         $service->findById(999);
     }
 
+    public function test_update_calls_repository_and_returns_updated_product(): void
+    {
+        $existing = new Product(['name' => 'Old Product Name']);
+        $existing->id = 1;
+
+        $updateData = ['name' => 'New Product Name'];
+        $updatedProduct = new Product(['name' => 'New Product Name']);
+        $updatedProduct->id = 1;
+
+        $mockRepository = Mockery::mock(ProductsRepository::class);
+        $mockRepository->shouldReceive('findById')
+            ->once()
+            ->with(1)
+            ->andReturn($existing);
+
+        $mockRepository->shouldReceive('update')
+            ->once()
+            ->with(1, $updateData)
+            ->andReturn($updatedProduct);
+
+        $service = new ProductsServices($mockRepository);
+        $result = $service->update(1, $updateData);
+
+        $this->assertInstanceOf(Product::class, $result);
+        $this->assertEquals('New Product Name', $result->name);
+    }
+
+    public function test_update_throws_product_not_found_exception_when_product_does_not_exist(): void
+    {
+        $this->expectException(ProductNotFoundException::class);
+        $this->expectExceptionMessage('El producto solicitado no fue encontrado.');
+
+        $mockRepository = Mockery::mock(ProductsRepository::class);
+        $mockRepository->shouldReceive('findById')
+            ->once()
+            ->with(999)
+            ->andReturn(null);
+
+        $service = new ProductsServices($mockRepository);
+        $service->update(999, ['name' => 'New Product Name']);
+    }
+
     public function test_delete_calls_repository_and_returns_true_when_successful(): void
     {
         $mockRepository = Mockery::mock(ProductsRepository::class);

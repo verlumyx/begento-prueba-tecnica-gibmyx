@@ -177,6 +177,77 @@ class ProductsEloquentRepositoryTest extends TestCase
         $this->assertNull($found);
     }
 
+    public function test_update_modifies_product_in_database_and_returns_fresh_instance(): void
+    {
+        $currency1 = Currency::factory()->create();
+        $currency2 = Currency::factory()->create();
+        $product = Product::factory()->create([
+            'currency_id' => $currency1->id,
+            'name' => 'Old Product Name',
+            'description' => 'Old description',
+            'price' => 100.00,
+            'tax_cost' => 16.00,
+            'manufacturing_cost' => 50.00,
+        ]);
+
+        $updated = $this->repository->update($product->id, [
+            'name' => 'New Product Name',
+            'description' => 'New description',
+            'price' => 150.00,
+            'currency_id' => $currency2->id,
+            'tax_cost' => 24.00,
+            'manufacturing_cost' => 70.00,
+        ]);
+
+        $this->assertInstanceOf(Product::class, $updated);
+        $this->assertEquals($product->id, $updated->id);
+        $this->assertEquals('New Product Name', $updated->name);
+        $this->assertEquals('New description', $updated->description);
+        $this->assertEquals('150.00', $updated->price);
+        $this->assertEquals($currency2->id, $updated->currency_id);
+        $this->assertEquals('24.00', $updated->tax_cost);
+        $this->assertEquals('70.00', $updated->manufacturing_cost);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'name' => 'New Product Name',
+            'price' => 150.00,
+            'currency_id' => $currency2->id,
+        ]);
+    }
+
+    public function test_update_returns_null_when_product_does_not_exist(): void
+    {
+        $result = $this->repository->update(99999, ['name' => 'Non Existent']);
+
+        $this->assertNull($result);
+    }
+
+    public function test_update_partial_fields_leaves_other_fields_intact(): void
+    {
+        $currency = Currency::factory()->create();
+        $product = Product::factory()->create([
+            'currency_id' => $currency->id,
+            'name' => 'Original Name',
+            'description' => 'Original Description',
+            'price' => 200.00,
+            'tax_cost' => 32.00,
+            'manufacturing_cost' => 80.00,
+        ]);
+
+        $updated = $this->repository->update($product->id, [
+            'price' => 250.00,
+        ]);
+
+        $this->assertInstanceOf(Product::class, $updated);
+        $this->assertEquals('Original Name', $updated->name);
+        $this->assertEquals('Original Description', $updated->description);
+        $this->assertEquals('250.00', $updated->price);
+        $this->assertEquals($currency->id, $updated->currency_id);
+        $this->assertEquals('32.00', $updated->tax_cost);
+        $this->assertEquals('80.00', $updated->manufacturing_cost);
+    }
+
     public function test_delete_removes_product_from_database_and_returns_true(): void
     {
         $currency = Currency::factory()->create();

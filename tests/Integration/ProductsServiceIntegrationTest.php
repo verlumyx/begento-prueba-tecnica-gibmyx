@@ -98,6 +98,40 @@ class ProductsServiceIntegrationTest extends TestCase
         $service->findById(99999);
     }
 
+    public function test_service_can_update_product_in_database(): void
+    {
+        $currency = Currency::factory()->create();
+        $product = Product::factory()->create([
+            'currency_id' => $currency->id,
+            'name' => 'Old Product Name',
+        ]);
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $updated = $service->update($product->id, [
+            'name' => 'New Product Name',
+        ]);
+
+        $this->assertInstanceOf(Product::class, $updated);
+        $this->assertEquals('New Product Name', $updated->name);
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'name' => 'New Product Name',
+        ]);
+    }
+
+    public function test_service_update_throws_exception_when_product_not_found(): void
+    {
+        $this->expectException(ProductNotFoundException::class);
+        $this->expectExceptionMessage('El producto solicitado no fue encontrado.');
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $service->update(99999, ['name' => 'Non Existent']);
+    }
+
     public function test_service_can_delete_product_from_database(): void
     {
         $currency = Currency::factory()->create();
