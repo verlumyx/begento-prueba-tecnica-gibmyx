@@ -1,0 +1,112 @@
+<?php
+
+namespace Tests\Integration;
+
+use App\Models\Currency;
+use App\Models\Product;
+use App\Repositories\Contracts\ProductsRepository;
+use App\Repositories\ProductsEloquentRepository;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ProductsEloquentRepositoryTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private ProductsEloquentRepository $repository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->repository = new ProductsEloquentRepository;
+    }
+
+    public function test_repository_is_bound_in_service_container(): void
+    {
+        $resolved = $this->app->make(ProductsRepository::class);
+
+        $this->assertInstanceOf(ProductsEloquentRepository::class, $resolved);
+    }
+
+    public function test_create_stores_product_in_database_and_returns_model(): void
+    {
+        $currency = Currency::factory()->create([
+            'name' => 'US Dollar',
+            'symbol' => '$',
+            'exchange_rate' => 1.0000,
+        ]);
+
+        $productData = [
+            'name' => 'Laptop Gamer Pro',
+            'description' => 'Laptop de alto rendimiento',
+            'price' => 1200.50,
+            'currency_id' => $currency->id,
+            'tax_cost' => 192.08,
+            'manufacturing_cost' => 750.00,
+        ];
+
+        $product = $this->repository->create($productData);
+
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertNotNull($product->id);
+        $this->assertEquals('Laptop Gamer Pro', $product->name);
+        $this->assertEquals('Laptop de alto rendimiento', $product->description);
+        $this->assertEquals('1200.50', $product->price);
+        $this->assertEquals($currency->id, $product->currency_id);
+        $this->assertEquals('192.08', $product->tax_cost);
+        $this->assertEquals('750.00', $product->manufacturing_cost);
+        $this->assertNotNull($product->created_at);
+        $this->assertNotNull($product->updated_at);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'name' => 'Laptop Gamer Pro',
+            'currency_id' => $currency->id,
+        ]);
+    }
+
+    public function test_create_stores_product_with_nullable_description(): void
+    {
+        $currency = Currency::factory()->create();
+
+        $productData = [
+            'name' => 'Mechanical Keyboard',
+            'description' => null,
+            'price' => 89.99,
+            'currency_id' => $currency->id,
+            'tax_cost' => 14.40,
+            'manufacturing_cost' => 35.00,
+        ];
+
+        $product = $this->repository->create($productData);
+
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertNull($product->description);
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'description' => null,
+        ]);
+    }
+
+    public function test_created_product_belongs_to_currency_relation(): void
+    {
+        $currency = Currency::factory()->create([
+            'name' => 'Euro',
+            'symbol' => '€',
+            'exchange_rate' => 0.9200,
+        ]);
+
+        $product = $this->repository->create([
+            'name' => 'Monitor 4K',
+            'description' => 'Ultra HD',
+            'price' => 450.00,
+            'currency_id' => $currency->id,
+            'tax_cost' => 72.00,
+            'manufacturing_cost' => 200.00,
+        ]);
+
+        $this->assertInstanceOf(Currency::class, $product->currency);
+        $this->assertEquals($currency->id, $product->currency->id);
+        $this->assertEquals('Euro', $product->currency->name);
+    }
+}
