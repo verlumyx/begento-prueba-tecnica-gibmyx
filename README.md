@@ -232,6 +232,7 @@ Toda la API está documentada con atributos de **OpenAPI 3.0 / Swagger** integra
 
 - **Swagger UI:** [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation)
 - **Especificación JSON OpenAPI:** Ubicada en `storage/api-docs/api-docs.json`.
+- **Colección de Postman:** Archivo `postman_collection.json` listo para importar en Postman o Insomnia con todos los endpoints, parámetros y cuerpos de prueba precargados.
 
 Si realizas cambios en las anotaciones o controladores, puedes regenerar la documentación con:
 ```bash
