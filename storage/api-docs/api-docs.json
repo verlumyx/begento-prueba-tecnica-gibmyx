@@ -19,7 +19,7 @@
                 ],
                 "summary": "Listar todas las divisas",
                 "description": "Retorna el listado completo de divisas disponibles en el sistema con sus tasas de cambio.",
-                "operationId": "83dc783b06ff74c6780eebbe38bdcfe9",
+                "operationId": "5022b5d929ef4a734bd281f4825c9f93",
                 "responses": {
                     "200": {
                         "description": "Lista de divisas obtenida exitosamente",
@@ -67,12 +67,133 @@
                     }
                 }
             }
+        },
+        "/products": {
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Crear un nuevo producto",
+                "description": "Registra un nuevo producto con su moneda base y costos asociados.",
+                "operationId": "279ce8d056ac355731998d704c92a040",
+                "requestBody": {
+                    "description": "Datos requeridos para la creación de un producto",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price",
+                                    "currency_id",
+                                    "tax_cost",
+                                    "manufacturing_cost"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Laptop Gamer Pro"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Laptop de alto rendimiento",
+                                        "nullable": true
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 1200.5
+                                    },
+                                    "currency_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tax_cost": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 192.08
+                                    },
+                                    "manufacturing_cost": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 750
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Producto creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Laptop Gamer Pro"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Laptop de alto rendimiento",
+                                            "nullable": true
+                                        },
+                                        "price": {
+                                            "type": "string",
+                                            "example": "1200.50"
+                                        },
+                                        "currency_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "tax_cost": {
+                                            "type": "string",
+                                            "example": "192.08"
+                                        },
+                                        "manufacturing_cost": {
+                                            "type": "string",
+                                            "example": "750.00"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en los datos enviados"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "Currencies",
             "description": "Currencies"
+        },
+        {
+            "name": "Products",
+            "description": "Products"
         }
     ]
 }

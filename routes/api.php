@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Currencies\CurrenciesGetController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Products\ProductPostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/status', function () {
@@ -12,3 +12,4 @@ Route::get('/status', function () {
 });
 
 Route::get('/currencies', CurrenciesGetController::class);
+Route::post('/products', ProductPostController::class);
