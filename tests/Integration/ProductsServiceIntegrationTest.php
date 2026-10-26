@@ -97,4 +97,29 @@ class ProductsServiceIntegrationTest extends TestCase
 
         $service->findById(99999);
     }
+
+    public function test_service_can_delete_product_from_database(): void
+    {
+        $currency = Currency::factory()->create();
+        $product = Product::factory()->create(['currency_id' => $currency->id]);
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $result = $service->delete($product->id);
+
+        $this->assertTrue($result);
+        $this->assertDatabaseMissing('products', ['id' => $product->id]);
+    }
+
+    public function test_service_delete_throws_exception_when_product_not_found(): void
+    {
+        $this->expectException(ProductNotFoundException::class);
+        $this->expectExceptionMessage('El producto solicitado no fue encontrado.');
+
+        /** @var ProductsServices $service */
+        $service = $this->app->make(ProductsServices::class);
+
+        $service->delete(99999);
+    }
 }

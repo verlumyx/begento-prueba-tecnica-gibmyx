@@ -4,6 +4,7 @@ namespace Tests\Integration;
 
 use App\Models\Currency;
 use App\Models\Product;
+use App\Models\ProductPrice;
 use App\Repositories\Contracts\ProductsRepository;
 use App\Repositories\ProductsEloquentRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -174,5 +175,44 @@ class ProductsEloquentRepositoryTest extends TestCase
         $found = $this->repository->findById(99999);
 
         $this->assertNull($found);
+    }
+
+    public function test_delete_removes_product_from_database_and_returns_true(): void
+    {
+        $currency = Currency::factory()->create();
+        $product = Product::factory()->create(['currency_id' => $currency->id]);
+
+        $this->assertDatabaseHas('products', ['id' => $product->id]);
+
+        $result = $this->repository->delete($product->id);
+
+        $this->assertTrue($result);
+        $this->assertDatabaseMissing('products', ['id' => $product->id]);
+    }
+
+    public function test_delete_returns_false_when_product_does_not_exist(): void
+    {
+        $result = $this->repository->delete(99999);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_delete_cascades_to_product_prices(): void
+    {
+        $currency = Currency::factory()->create();
+        $product = Product::factory()->create(['currency_id' => $currency->id]);
+        $price = ProductPrice::factory()->create([
+            'product_id' => $product->id,
+            'currency_id' => $currency->id,
+        ]);
+
+        $this->assertDatabaseHas('products', ['id' => $product->id]);
+        $this->assertDatabaseHas('product_prices', ['id' => $price->id]);
+
+        $result = $this->repository->delete($product->id);
+
+        $this->assertTrue($result);
+        $this->assertDatabaseMissing('products', ['id' => $product->id]);
+        $this->assertDatabaseMissing('product_prices', ['id' => $price->id]);
     }
 }

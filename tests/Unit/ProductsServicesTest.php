@@ -90,4 +90,33 @@ class ProductsServicesTest extends TestCase
         $service = new ProductsServices($mockRepository);
         $service->findById(999);
     }
+
+    public function test_delete_calls_repository_and_returns_true_when_successful(): void
+    {
+        $mockRepository = Mockery::mock(ProductsRepository::class);
+        $mockRepository->shouldReceive('delete')
+            ->once()
+            ->with(1)
+            ->andReturn(true);
+
+        $service = new ProductsServices($mockRepository);
+        $result = $service->delete(1);
+
+        $this->assertTrue($result);
+    }
+
+    public function test_delete_throws_product_not_found_exception_when_not_found(): void
+    {
+        $this->expectException(ProductNotFoundException::class);
+        $this->expectExceptionMessage('El producto solicitado no fue encontrado.');
+
+        $mockRepository = Mockery::mock(ProductsRepository::class);
+        $mockRepository->shouldReceive('delete')
+            ->once()
+            ->with(999)
+            ->andReturn(false);
+
+        $service = new ProductsServices($mockRepository);
+        $service->delete(999);
+    }
 }
