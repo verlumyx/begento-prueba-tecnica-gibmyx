@@ -46,6 +46,26 @@ class ProductsServices
     }
 
     /**
+     * Update a product by its ID or throw a ProductNotFoundException.
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws ProductNotFoundException
+     */
+    public function update(int $id, array $data): Product
+    {
+        $this->findById($id);
+
+        $updated = $this->productsRepository->update($id, $data);
+
+        if (! $updated) {
+            throw new ProductNotFoundException;
+        }
+
+        return $updated;
+    }
+
+    /**
      * Delete a product by its ID or throw a ProductNotFoundException.
      *
      * @throws ProductNotFoundException

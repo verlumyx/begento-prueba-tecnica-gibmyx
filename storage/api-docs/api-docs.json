@@ -487,6 +487,141 @@
                     }
                 }
             },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Actualizar un producto",
+                "description": "Actualiza los datos de un producto existente mediante su ID.",
+                "operationId": "dd351ecec253c59988b729069734c258",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos a actualizar del producto",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Laptop Gamer Pro Updated"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Laptop de alto rendimiento actualizada",
+                                        "nullable": true
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 1299.99
+                                    },
+                                    "currency_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "tax_cost": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 207.99
+                                    },
+                                    "manufacturing_cost": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 800
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Producto actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Laptop Gamer Pro Updated"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Laptop de alto rendimiento actualizada",
+                                            "nullable": true
+                                        },
+                                        "price": {
+                                            "type": "string",
+                                            "example": "1299.99"
+                                        },
+                                        "currency_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "tax_cost": {
+                                            "type": "string",
+                                            "example": "207.99"
+                                        },
+                                        "manufacturing_cost": {
+                                            "type": "string",
+                                            "example": "800.00"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2026-10-25T21:42:30.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Producto no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El producto solicitado no fue encontrado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en los datos enviados"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Products"

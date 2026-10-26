@@ -25,6 +25,13 @@ interface ProductsRepository
     public function findById(int $id): ?Product;
 
     /**
+     * Update a product by its ID.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public function update(int $id, array $data): ?Product;
+
+    /**
      * Delete a product by its ID.
      */
     public function delete(int $id): bool;

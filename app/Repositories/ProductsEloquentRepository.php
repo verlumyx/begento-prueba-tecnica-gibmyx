@@ -35,6 +35,24 @@ class ProductsEloquentRepository implements ProductsRepository
     }
 
     /**
+     * Update a product by its ID.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public function update(int $id, array $data): ?Product
+    {
+        $product = $this->findById($id);
+
+        if (! $product) {
+            return null;
+        }
+
+        $product->update($data);
+
+        return $product->fresh();
+    }
+
+    /**
      * Delete a product by its ID.
      */
     public function delete(int $id): bool
