@@ -32,7 +32,7 @@ class CurrenciesGetControllerTest extends TestCase
             ->once()
             ->andReturn($currenciesData);
 
-        $controller = new CurrenciesGetController();
+        $controller = new CurrenciesGetController;
         $response = $controller($mockService);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -47,7 +47,7 @@ class CurrenciesGetControllerTest extends TestCase
             ->once()
             ->andReturn(collect([]));
 
-        $controller = new CurrenciesGetController();
+        $controller = new CurrenciesGetController;
         $response = $controller($mockService);
 
         $this->assertInstanceOf(JsonResponse::class, $response);

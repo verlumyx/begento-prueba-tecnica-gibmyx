@@ -62,8 +62,8 @@ class CurrenciesGetE2ETest extends TestCase
 
     public function test_currencies_endpoint_rejects_unsupported_methods(): void
     {
-        $postResponse = $this->postJson('/api/currencies');
-        $postResponse->assertStatus(405);
+        $patchResponse = $this->patchJson('/api/currencies');
+        $patchResponse->assertStatus(405);
 
         $putResponse = $this->putJson('/api/currencies');
         $putResponse->assertStatus(405);
